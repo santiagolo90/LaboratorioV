@@ -16,8 +16,7 @@
         <ImageView
             android:layout_width="50dp"
             android:layout_height="100dp"
-            android:id="@+id/imagenTest"
-            android:src="@drawable/save"/>
+            android:id="@+id/imagenTest"/>
         <Button
             android:text="Agregar"
             android:id="@+id/btnAgregar"

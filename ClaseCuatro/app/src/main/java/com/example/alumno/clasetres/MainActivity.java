@@ -12,15 +12,22 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements Handler.Callback {
     List<Persona> personas;
+    List<Carrusel> carrusels;
     MyAdapter myAdapter;
+    String myImagenURL;
     public static final int TEXTO = 1;
     public static final int IMAGEN = 2;
+    public static final int MyJson = 3;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         personas.add(new Persona("Miguel","Perez","444-444"));
         personas.add(new Persona("Fernado","Perez","444-444"));
 
+
+
         RecyclerView rvPersona = (RecyclerView) super.findViewById(R.id.listaPersonas);
 
         myAdapter = new MyAdapter(personas , this);
@@ -53,17 +62,25 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
 
         Handler handler = new Handler(this);
 
-        MyHilo hilo = new MyHilo(handler,"http://www.lslutnfra.com/alumnos/practicas/listaPersonas.xml",TEXTO);
-        hilo.start();
+        //MyHilo hilo = new MyHilo(handler,"http://www.lslutnfra.com/alumnos/practicas/listaPersonas.xml",TEXTO);
+        //hilo.start();
 
-        MyHilo hilo2 = new MyHilo(handler,"http://www.lslutnfra.com/alumnos/practicas/ubuntu-logo.png",IMAGEN);
-        hilo2.start();
+        //MyHilo hilo2 = new MyHilo(handler,"https://onemoretry.eu/assets/fotos/carrusel/2019-02-05_18:23:56.jpg",IMAGEN);
+        //hilo2.start();
+
+        MyHilo hilo3 = new MyHilo(handler,"https://onemoretry.eu/PHP/carrusel/traerTodos",MyJson);
+        hilo3.start();
+
+
+
+
 
     }
 
 
     @Override
     public boolean handleMessage(Message msg) {
+
         if (msg.arg1 == MainActivity.TEXTO){
             Log.d("desde el hilo texto",msg.obj.toString());
         }else if(msg.arg1  == MainActivity.IMAGEN){
@@ -72,8 +89,44 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
             ImageView imagen =(ImageView) super.findViewById(R.id.imagenTest);
             Bitmap bitmap = BitmapFactory.decodeByteArray((byte[])msg.obj, 0, ((byte[])msg.obj).length);
             imagen.setImageBitmap(bitmap);
+        }else if(msg.arg1  == MainActivity.MyJson){
+            convertToJson(msg.obj.toString());
+
+            for (int i = 0; i < carrusels.size(); i++) {
+                Log.d("desde el hilo MyJson",carrusels.get(i).toString());
+            }
         }
 
         return false;
     }
+
+    protected void convertToJson(String datos) {
+        carrusels = new ArrayList<Carrusel>();
+        try {
+            JSONArray jsonarray = new JSONArray(datos);
+            //ArrayList<HashMap<String, String>> personas = new ArrayList<>();
+            for (int i = 0; i < jsonarray.length(); i++) {
+                JSONObject c = jsonarray.getJSONObject(i);
+                Number idCarrusel = c.getInt("idCarrusel");
+                String titulo = c.getString("titulo");
+                String subtitulo = c.getString("subtitulo");
+                String orden = c.getString("orden");
+                String tipo_carrusel = c.getString("tipo_carrusel");
+                String foto = c.getString("foto");
+                carrusels.add(new Carrusel(idCarrusel,titulo,subtitulo,orden,tipo_carrusel,foto));
+                this.myImagenURL = foto;
+
+            }
+
+            Handler handler = new Handler(this);
+            MyHilo hilo4 = new MyHilo(handler,this.myImagenURL,IMAGEN);
+            hilo4.start();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //return null;
+    }
+
+
 }

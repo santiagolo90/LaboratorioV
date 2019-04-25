@@ -3,6 +3,7 @@ package com.example.alumno.clasetres;
 import android.os.Handler;
 import android.os.Message;
 
+
 /**
  * Created by alumno on 11/04/2019.
  */
@@ -29,8 +30,15 @@ public class MyHilo extends Thread {
         }else if(this.tipo == MainActivity.IMAGEN){
             byte[] respues = myConeccion.conectarseImagen(url);
             mensaje.obj = respues;
+        }else if(this.tipo == MainActivity.MyJson){
+            String respues = myConeccion.doInBackground(url);
+            mensaje.obj = respues;
+
+
         }
 
         this.handler.sendMessage(mensaje);
     }
+
+
 }
