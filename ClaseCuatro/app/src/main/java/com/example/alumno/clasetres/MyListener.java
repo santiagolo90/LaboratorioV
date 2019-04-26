@@ -11,7 +11,7 @@ public class MyListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        this.miapp.personas.add(new Persona("Nueva","Persona","555-555"));
+        //this.miapp.personas.add(new Persona("Nueva","Persona","555-555"));
         this.miapp.myAdapter.notifyDataSetChanged();
 
     }

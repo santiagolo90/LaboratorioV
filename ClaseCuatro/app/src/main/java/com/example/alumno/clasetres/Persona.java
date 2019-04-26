@@ -9,17 +9,19 @@ public class Persona {
     private String nombre;
     private String apellido;
     private String telefono;
-
+    private String imagen;
+    private byte[] imagenes;
+    public Boolean seEstaDescargando = Boolean.FALSE;
     public Persona() {
 
     }
 
 
-
-    public Persona(String nombre, String apellido, String telefono) {
+    public Persona(String nombre, String apellido, String telefono, String imagen) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
+        this.imagen = imagen;
     }
 
     public String getNombre() {
@@ -46,12 +48,29 @@ public class Persona {
         this.telefono = telefono;
     }
 
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    public byte[] getImagenes() {
+        return imagenes;
+    }
+
+    public void setImagenes(byte[] imagenes) {
+        this.imagenes = imagenes;
+    }
+
     @Override
     public String toString() {
         return "Persona{" +
                 "nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", telefono='" + telefono + '\'' +
+                ", imagen='" + imagen + '\'' +
                 '}';
     }
 }

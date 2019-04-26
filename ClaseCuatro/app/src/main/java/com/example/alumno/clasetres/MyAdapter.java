@@ -1,5 +1,7 @@
 package com.example.alumno.clasetres;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
@@ -17,7 +19,7 @@ import java.util.List;
 public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
 
     List<Persona> p;
-    AppCompatActivity miapp;
+    MainActivity miapp;
 
     public MyAdapter(List<Persona> p,MainActivity mipp ) {
         this.p = p;
@@ -39,6 +41,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyViewHolder> {
         holder.tvNombre.setText(p.getNombre());
         holder.tvApellido.setText(p.getApellido());
         holder.personaAux = p;
+        if (p.getImagenes() == null && !p.seEstaDescargando){
+
+            MyHilo hilo2 = new MyHilo(this.miapp.handler,p.getImagen(),this.miapp.IMAGEN, position);
+            hilo2.start();
+            p.seEstaDescargando = Boolean.TRUE;
+        } else {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(p.getImagenes(), 0, p.getImagenes().length);
+            holder.imageView.setImageBitmap(bitmap);
+
+        }
 
     }
 

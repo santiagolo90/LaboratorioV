@@ -1,0 +1,14 @@
+<Personas>
+<Persona nombre="Pedro" apellido="Picapiedra" tel="4666-6666">
+http://www.lslutnfra.com/alumnos/practicas/pedro_pic.jpg
+</Persona>
+<Persona nombre="Pablo" apellido="Marmol" tel="4777-7777">
+http://www.lslutnfra.com/alumnos/practicas/pablo_marmol.jpg
+</Persona>
+<Persona nombre="Marty" apellido="McFly" tel="4666-6666">
+http://www.lslutnfra.com/alumnos/practicas/marty_mcfly.jpg
+</Persona>
+<Persona nombre="Marcelo" apellido="Tinelli" tel="4999-9999">
+http://www.lslutnfra.com/alumnos/practicas/marcelo_tinelli.jpg
+</Persona>
+</Personas>

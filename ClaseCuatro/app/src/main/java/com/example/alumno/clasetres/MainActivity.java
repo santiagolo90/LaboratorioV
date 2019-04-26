@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
     List<Carrusel> carrusels;
     MyAdapter myAdapter;
     String myImagenURL;
+    Handler handler;
     public static final int TEXTO = 1;
     public static final int IMAGEN = 2;
     public static final int MyJson = 3;
@@ -41,14 +43,14 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
 
 
         personas = new ArrayList<Persona>();
-        personas.add(new Persona("Juan","Perez","444-444"));
+ /*       personas.add(new Persona("Juan","Perez","444-444"));
         personas.add(new Persona("Mario","Perez","444-444"));
         personas.add(new Persona("Antonio","Perez","444-444"));
         personas.add(new Persona("Pepe","Perez","444-444"));
         personas.add(new Persona("Santiago","Perez","444-444"));
         personas.add(new Persona("Miguel","Perez","444-444"));
         personas.add(new Persona("Fernado","Perez","444-444"));
-
+*/
 
 
         RecyclerView rvPersona = (RecyclerView) super.findViewById(R.id.listaPersonas);
@@ -60,19 +62,16 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
         rvPersona.setAdapter(myAdapter);
         rvPersona.setLayoutManager(lm);
 
-        Handler handler = new Handler(this);
+        handler = new Handler(this);
 
-        //MyHilo hilo = new MyHilo(handler,"http://www.lslutnfra.com/alumnos/practicas/listaPersonas.xml",TEXTO);
-        //hilo.start();
+        MyHilo hilo = new MyHilo(handler,"http://192.168.2.154:8080/listaPersonasImg.xml",TEXTO);
+        hilo.start();
 
         //MyHilo hilo2 = new MyHilo(handler,"https://onemoretry.eu/assets/fotos/carrusel/2019-02-05_18:23:56.jpg",IMAGEN);
         //hilo2.start();
 
-        MyHilo hilo3 = new MyHilo(handler,"https://onemoretry.eu/PHP/carrusel/traerTodos",MyJson);
-        hilo3.start();
-
-
-
+       // MyHilo hilo3 = new MyHilo(handler,"https://onemoretry.eu/PHP/carrusel/traerTodos",MyJson);
+        //hilo3.start();
 
 
     }
@@ -82,13 +81,22 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
     public boolean handleMessage(Message msg) {
 
         if (msg.arg1 == MainActivity.TEXTO){
-            Log.d("desde el hilo texto",msg.obj.toString());
+
+            for (Persona p: (List<Persona>)msg.obj){
+                Log.d("desde el hilo texto",p.toString());
+            }
+
+            this.personas.addAll((List<Persona>)msg.obj);
+            this.myAdapter.notifyDataSetChanged();
         }else if(msg.arg1  == MainActivity.IMAGEN){
             //Log.d("desde el hilo",msg.obj.toString());
             Log.d("desde el hilo imagen",msg.obj.toString());
-            ImageView imagen =(ImageView) super.findViewById(R.id.imagenTest);
+
+            this.personas.get(msg.arg2).setImagenes((byte[])msg.obj);
+            this.myAdapter.notifyItemChanged(msg.arg2);
+            /*ImageView imagen =(ImageView) super.findViewById(R.id.imagenTest);
             Bitmap bitmap = BitmapFactory.decodeByteArray((byte[])msg.obj, 0, ((byte[])msg.obj).length);
-            imagen.setImageBitmap(bitmap);
+            imagen.setImageBitmap(bitmap);*/
         }else if(msg.arg1  == MainActivity.MyJson){
             convertToJson(msg.obj.toString());
 
