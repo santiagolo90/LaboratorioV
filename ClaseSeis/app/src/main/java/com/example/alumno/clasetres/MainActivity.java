@@ -1,9 +1,15 @@
 package com.example.alumno.clasetres;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -69,6 +75,15 @@ public class MainActivity extends AppCompatActivity implements Handler.Callback 
 
        // MyHilo hilo3 = new MyHilo(handler,"https://onemoretry.eu/PHP/carrusel/traerTodos",MyJson);
         //hilo3.start();
+/*
+        Intent callIntent = new Intent(Intent.ACTION_CALL,Uri.parse("tel:44444444"));
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, 0);
+        }else{
+            startActivity(callIntent);
+        }
+        */
 
 
     }
